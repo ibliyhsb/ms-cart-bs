@@ -1,0 +1,29 @@
+package cl.duoc.ms_cart_bs.clients;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+
+import cl.duoc.ms_cart_bs.model.dto.CartDTO;
+
+@FeignClient(name = "ms-cart-db", url = "http://localhost:8180")
+public interface CartDbFeignClient {
+
+    
+    @GetMapping("/getCartById/{idCart}")
+    public ResponseEntity<CartDTO> getCartById(@PathVariable("idCart") Long idCart);
+    
+    @PostMapping("/insertCart")
+    public ResponseEntity<String> insertCart (CartDTO cartDTO);
+    
+    @PutMapping("/insertProduct/{idCart}")
+    public ResponseEntity<?> insertProduct (String productName, @PathVariable("idCart") Long idCart);
+
+    @DeleteMapping("/deleteProduct/{idCart}")
+    public ResponseEntity<?> deleteProduct(String productName, Long idCart);
+
+}
