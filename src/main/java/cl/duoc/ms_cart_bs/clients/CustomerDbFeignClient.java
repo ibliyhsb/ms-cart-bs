@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import cl.duoc.ms_cart_bs.model.dto.CustomerDto;
 
-@FeignClient(name = "ms-customers-db", url = "http://localhost:8080")
+@FeignClient(name = "ms-customers-db", url = "http://localhost:8081")
 public interface CustomerDbFeignClient {
 
     

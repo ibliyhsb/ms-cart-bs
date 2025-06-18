@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import cl.duoc.ms_cart_bs.model.dto.ProductDTO;
 
-@FeignClient(name = "ms-products-db", url = "http://localhost:8280")
+@FeignClient(name = "ms-products-db", url = "http://localhost:8281")
 public interface ProductDbFeignClient {
 
     @GetMapping("/api/products/GetProductById/{idProduct}")

@@ -11,7 +11,6 @@ import cl.duoc.ms_cart_bs.clients.ProductDbFeignClient;
 import cl.duoc.ms_cart_bs.model.dto.CartDTO;
 import cl.duoc.ms_cart_bs.model.dto.CustomerDto;
 import cl.duoc.ms_cart_bs.model.dto.ProductDTO;
-import feign.FeignException;
 
 @Service
 public class CartService {
