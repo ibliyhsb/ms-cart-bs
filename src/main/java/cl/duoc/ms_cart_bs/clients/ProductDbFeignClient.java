@@ -10,6 +10,6 @@ import cl.duoc.ms_cart_bs.model.dto.ProductDTO;
 @FeignClient(name = "ms-products-db", url = "http://localhost:8280")
 public interface ProductDbFeignClient {
 
-    @GetMapping("/api/products/GetProductById{idProduct}")
+    @GetMapping("/api/products/GetProductById/{idProduct}")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable(name = "idProduct") Long idProduct);
 }

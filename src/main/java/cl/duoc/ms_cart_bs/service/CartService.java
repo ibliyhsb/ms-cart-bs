@@ -27,12 +27,14 @@ public class CartService {
 
     public ResponseEntity<?> insertCart (Long idCustomer){
         ResponseEntity<CustomerDto> response = customerDbFeignClient.getCustomerById(idCustomer);
-        if(response == null){
+
+        if(response.getBody() == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The customer does not exist");
         }
 
         else{           
             CartDTO cartDTO = new CartDTO();
+            cartDTO.setIdCart(idCustomer);
             cartDTO.setIdCustomer(idCustomer);
             cartDTO.setProducts(null);
             cartDTO.setTotal(0);
@@ -42,42 +44,31 @@ public class CartService {
 
     }
 
-    public ResponseEntity<?> getCartById(Long idCart){
-
-        try{
-
-            return ResponseEntity.ok().body(cartDbFeignClient.getCartById(idCart));}
-
-        catch (FeignException feignException) {
-
-            return ResponseEntity.status(feignException.status()).body(feignException.contentUTF8());
-        }
-
+    public CartDTO getCartById(Long idCart){
+        return cartDbFeignClient.getCartById(idCart);
     }
 
+   public ResponseEntity<String> insertProduct (Long idProduct, Long idCart){
 
-    public ResponseEntity<?> insertProduct (Long idProduct, Long idCart){
+       CartDTO response = cartDbFeignClient.getCartById(idCart);
+       ResponseEntity<ProductDTO> response2 = productDbFeignClient.getProductById(idProduct);
 
-        ResponseEntity<CartDTO> response = cartDbFeignClient.getCartById(idCart);
-        ResponseEntity<ProductDTO> response2 = productDbFeignClient.getProductById(idProduct);
+           if(response == null){
+               return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The cart does not exist");
+           }
 
-            if(response == null){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The cart does not exist");
-            }
-
-            else if(response2 == null){
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The product does not exist");
-            }
-
-            else {
-
-                String productName = response2.getBody().getProductName();
-                return cartDbFeignClient.insertProduct(productName, idCart);
-        }
-    }
-
-    public ResponseEntity<?> deleteProduct(String productName, Long idCart){
-        return cartDbFeignClient.deleteProduct(productName, idCart);
-    }
+           else if(response2.getBody() == null){
+               return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The product does not exist");
+           }
+           else {
+               int price = response2.getBody().getPrice();
+               String productName = response2.getBody().getProductName();
+               return cartDbFeignClient.insertProduct(price, productName, idCart);
+       }
+   }
+   
+   // public ResponseEntity<?> deleteProduct(String productName, Long idCart){
+   //     return cartDbFeignClient.deleteProduct(productName, idCart);
+   // }
 
 }
