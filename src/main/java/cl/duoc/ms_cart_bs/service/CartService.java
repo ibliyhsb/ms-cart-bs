@@ -67,8 +67,8 @@ public class CartService {
        }
    }
    
-   // public ResponseEntity<?> deleteProduct(String productName, Long idCart){
-   //     return cartDbFeignClient.deleteProduct(productName, idCart);
-   // }
+   public ResponseEntity<String> deleteProduct(String productName, Long idCart){
+       return cartDbFeignClient.deleteProduct(productName, idCart);
+   }
 
 }

@@ -48,15 +48,15 @@ public class CartController {
         return cartService.insertProduct(idProduct, idCart);
     }
 
-  //  @DeleteMapping("/deleteProduct/{productName}/{idCart}")
-  //  public ResponseEntity<?> deleteProduct(String productName, Long idCart){
-  //      try{
-  //          return cartService.deleteProduct(productName, idCart);
-  //      }
-  //      catch(FeignClientException feignClientException){
-  //          return ResponseEntity.status(feignClientException.status()).body(feignClientException.contentUTF8());
-  //      }
-  //  }
+    @DeleteMapping("/deleteProduct/{productName}/{idCart}")
+    public ResponseEntity<String> deleteProduct(@PathVariable("productName") String productName, @PathVariable("idCart") Long idCart){
+        try{
+            return cartService.deleteProduct(productName, idCart);
+        }
+        catch(FeignClientException feignClientException){
+            return ResponseEntity.status(feignClientException.status()).body(feignClientException.contentUTF8());
+        }
+    }
     
     
 }

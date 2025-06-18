@@ -24,7 +24,7 @@ public interface CartDbFeignClient {
     @PostMapping("/api/Cart/insertProduct/{price}/{productName}/{idCart}")
     public ResponseEntity<String> insertProduct (@PathVariable("price") int price, @PathVariable("productName") String productName, @PathVariable("idCart") Long idCart);
 
-  //  @DeleteMapping("/deleteProduct/{idCart}")
-  //  public ResponseEntity<?> deleteProduct(String productName, Long idCart);
-//
+    @DeleteMapping("/api/Cart/deleteProduct/{productName}/{idCart}")
+    public ResponseEntity<String> deleteProduct(@PathVariable("productName") String productName, @PathVariable("idCart") Long idCart);
+
 }
