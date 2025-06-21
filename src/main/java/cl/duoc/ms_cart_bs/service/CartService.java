@@ -52,13 +52,14 @@ public class CartService {
        CartDTO response = cartDbFeignClient.getCartById(idCart);
        ResponseEntity<ProductDTO> response2 = productDbFeignClient.getProductById(idProduct);
 
-           if(response == null){
+           if(response2.getBody() == null){
+               return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The product does not exist");
+           }
+
+           else if(response == null){
                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The cart does not exist");
            }
 
-           else if(response2.getBody() == null){
-               return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The product does not exist");
-           }
            else {
                int price = response2.getBody().getPrice();
                String productName = response2.getBody().getProductName();

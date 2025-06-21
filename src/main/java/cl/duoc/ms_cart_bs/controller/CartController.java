@@ -44,7 +44,11 @@ public class CartController {
 
     @PostMapping("/insertProduct/{idProduct}/{idCart}")
     public ResponseEntity<String> insertProduct (@PathVariable("idProduct") Long idProduct, @PathVariable("idCart") Long idCart) {
-        return cartService.insertProduct(idProduct, idCart);
+        try{
+            return cartService.insertProduct(idProduct, idCart);}
+        catch(FeignClientException feignClientException){
+            return ResponseEntity.status(feignClientException.status()).body(feignClientException.contentUTF8());
+        }
     }
 
     @DeleteMapping("/deleteProduct/{productName}/{idCart}")
