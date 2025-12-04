@@ -5,61 +5,72 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import cl.duoc.ms_cart_bs.model.dto.CartDTO;
+import cl.duoc.ms_cart_bs.model.dto.CartItemDTO;
 import cl.duoc.ms_cart_bs.service.CartService;
-import feign.FeignException.FeignClientException;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
-
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/Cart")
+@RequestMapping("/api/cart")
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:5174"}, allowCredentials = "true")
 public class CartController {
 
     @Autowired
     CartService cartService;
 
+    // Obtener carrito por ID
     @GetMapping("/getCartById/{idCart}")
-    public ResponseEntity<?> getCartById(@PathVariable("idCart") Long idCart){
-        try {
-        return ResponseEntity.ok(cartService.getCartById(idCart));}
-        catch(FeignClientException feignClientException){
-            return ResponseEntity.status(feignClientException.status()).body(feignClientException.contentUTF8());
-      }
+    public ResponseEntity<CartDTO> getCartById(@PathVariable Long idCart) {
+        CartDTO cart = cartService.getCartById(idCart);
+        return ResponseEntity.ok(cart);
     }
 
+    // Crear carrito nuevo - Retorna CartDTO
     @PostMapping("/insertCart/{idCustomer}")
-    public ResponseEntity<?> insertCart (@PathVariable("idCustomer") Long idCustomer) {    
-        try{   
-            return cartService.insertCart(idCustomer);
-        }
-        catch(FeignClientException feignClientException){
-            return ResponseEntity.status(feignClientException.status()).body(feignClientException.contentUTF8());
-      }
-        
+    public ResponseEntity<CartDTO> insertCart(@PathVariable String idCustomer) {
+        CartDTO cart = cartService.createCart(idCustomer);
+        return ResponseEntity.ok(cart);
     }
 
-    @PostMapping("/insertProduct/{idProduct}/{idCart}")
-    public ResponseEntity<String> insertProduct (@PathVariable("idProduct") Long idProduct, @PathVariable("idCart") Long idCart) {
-        try{
-            return cartService.insertProduct(idProduct, idCart);}
-        catch(FeignClientException feignClientException){
-            return ResponseEntity.status(feignClientException.status()).body(feignClientException.contentUTF8());
-        }
+    // Agregar producto - Recibe CartItemDTO en body
+    @PostMapping("/insertProduct/{idCart}")
+    public ResponseEntity<CartDTO> insertProduct(
+        @PathVariable Long idCart,
+        @RequestBody CartItemDTO item
+    ) {
+        CartDTO cart = cartService.addProduct(idCart, item);
+        return ResponseEntity.ok(cart);
     }
 
-    @DeleteMapping("/deleteProduct/{productName}/{idCart}")
-    public ResponseEntity<String> deleteProduct(@PathVariable("productName") String productName, @PathVariable("idCart") Long idCart){
-        try{
-            return cartService.deleteProduct(productName, idCart);
-        }
-        catch(FeignClientException feignClientException){
-            return ResponseEntity.status(feignClientException.status()).body(feignClientException.contentUTF8());
-        }
+    // Actualizar cantidad
+    @PutMapping("/updateQuantity/{idCart}/{productId}")
+    public ResponseEntity<CartDTO> updateQuantity(
+        @PathVariable Long idCart,
+        @PathVariable Long productId,
+        @RequestBody Map<String, Integer> body
+    ) {
+        int quantity = body.get("quantity");
+        CartDTO cart = cartService.updateQuantity(idCart, productId, quantity);
+        return ResponseEntity.ok(cart);
     }
-    
+
+    // Eliminar producto - Usa productId
+    @DeleteMapping("/deleteProduct/{idCart}/{productId}")
+    public ResponseEntity<CartDTO> deleteProduct(
+        @PathVariable Long idCart,
+        @PathVariable Long productId
+    ) {
+        CartDTO cart = cartService.deleteProduct(idCart, productId);
+        return ResponseEntity.ok(cart);
+    }
     
 }

@@ -25,7 +25,7 @@ public class CartDTO {
      private Long idCustomer;
 
     @JsonProperty(value = "Products")
-     private List<String> products;
+     private List<CartItemDTO> products;
 
     @JsonProperty(value = "total")
      private int total;
