@@ -45,6 +45,11 @@ public class CartService {
             throw new RuntimeException("Producto no encontrado: " + request.getProductCode());
         }
 
+        // Validar que el precio no sea null
+        if (product.getPrecioCLP() == null) {
+            throw new RuntimeException("El producto " + request.getProductCode() + " no tiene precio definido. Producto: " + product.toString());
+        }
+
         // Crear item del carrito
         CartItemDTO item = new CartItemDTO();
         item.setId(UUID.randomUUID().toString());
@@ -94,7 +99,7 @@ public class CartService {
     private ProductDTO getProductByCode(String productCode) {
         try {
             return restTemplate.getForObject(
-                PRODUCTS_API + "/" + productCode, 
+                PRODUCTS_API + "/GetProductByCode/" + productCode, 
                 ProductDTO.class
             );
         } catch (Exception e) {
