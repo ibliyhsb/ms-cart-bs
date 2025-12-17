@@ -6,19 +6,10 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartItemDTO {
-
-    @JsonProperty(value = "id")
-    private String id;
+public class AddCartItemRequest {
 
     @JsonProperty(value = "productCode")
     private String productCode;
-
-    @JsonProperty(value = "productName")
-    private String productName;
-
-    @JsonProperty(value = "price")
-    private Double price;
 
     @JsonProperty(value = "quantity")
     private Integer quantity;
@@ -28,10 +19,4 @@ public class CartItemDTO {
 
     @JsonProperty(value = "personalizationMessage")
     private String personalizationMessage;
-
-    @JsonProperty(value = "imageUrl")
-    private String imageUrl;
-
-    @JsonProperty(value = "subtotal")
-    private Double subtotal;
 }
