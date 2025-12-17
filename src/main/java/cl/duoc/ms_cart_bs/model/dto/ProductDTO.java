@@ -4,9 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @Data
-import lombok.*;
-
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDTO {
