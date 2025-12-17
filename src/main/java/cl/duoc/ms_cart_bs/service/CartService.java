@@ -94,7 +94,7 @@ public class CartService {
     private ProductDTO getProductByCode(String productCode) {
         try {
             return restTemplate.getForObject(
-                PRODUCTS_API + "/GetProductByCode/" + productCode, 
+                PRODUCTS_API + "/" + productCode, 
                 ProductDTO.class
             );
         } catch (Exception e) {
